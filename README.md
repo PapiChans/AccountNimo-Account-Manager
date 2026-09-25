@@ -8,7 +8,7 @@
 | ------------------- | --------------------|
 | **Description**     | A private credential validation engine utilizing one-way hashing and custom hints to securely train and verify various account accessibility. |
 | **Project Duration**    | September 22, 2026 - In Progress|
-| **Current Version** | v0.0.0 |
+| **Current Version** | v0.1.0 |
 
 
 
