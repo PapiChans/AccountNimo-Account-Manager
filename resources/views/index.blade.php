@@ -29,7 +29,9 @@
                     <div class="nav-button ms-auto">
                         <ul class="nav navbar-nav navbar-end">
                             <li>
-                                <button type="button" class="btn btn-primary navbar-btn btn-rounded">Get Started</button>
+                                <a href="{{ route('login') }}">
+                                    <button type="button" class="btn btn-primary navbar-btn btn-rounded">Get Started</button>
+                                </a>
                             </li>
                         </ul>
                     </div>

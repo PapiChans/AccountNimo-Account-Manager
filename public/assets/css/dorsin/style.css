@@ -1102,7 +1102,7 @@ iframe {
 }
 
 .bg-home {
-  background: url("../images/bg-home.jpg");
+  background: url("../../images/background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
