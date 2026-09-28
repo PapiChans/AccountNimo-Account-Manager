@@ -52,32 +52,32 @@
                                     <p class="text-muted">Get your free account now</p>
                                 </div>
                                 <div class="p-2 mt-4">
-                                    <form class="needs-validation" novalidate action="index.html">
-
+                                    <form id="registerForm" class="needs-validation" method="POST" action="{{ route('register.store') }}">
+                                        @csrf
                                         <div class="mb-3">
                                             <label for="user" class="form-label">Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="user" placeholder="Enter your name" required>
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
                                         </div>
 
                                         <div class="mb-3">
                                             <label for="useremail" class="form-label">Email <span class="text-danger">*</span></label>
-                                            <input type="email" class="form-control" id="useremail" placeholder="Enter email address" required>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address">
                                         </div>
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="username" placeholder="Enter username" required>
+                                            <input type="text" class="form-control" name="account_username" id="account_username" placeholder="Enter username">
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label" for="password-input">Password</label>
                                             <div class="position-relative auth-pass-inputgroup">
-                                                <input type="password" class="form-control pe-5 password-input" onpaste="return false" placeholder="Enter password" id="password-input" aria-describedby="passwordInput" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                                                <input type="password" class="form-control pe-5 password-input" onpaste="return false" placeholder="Enter password" name="password" id="password" aria-describedby="passwordInput" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
                                                 <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon material-shadow-none" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>  
                                             </div>
                                         </div>
 
                                         <div class="mt-4">
-                                            <button class="btn btn-primary w-100" type="submit">Register</button>
+                                            <button class="btn btn-primary w-100" type="submit" id="submitButton">Register</button>
                                         </div>
                                     </form>
 
@@ -125,4 +125,92 @@
     <script src="{{ asset('assets/js/velzon/particles.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/particales.app.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/password-addon.init.js')}}"></script>
+    <script src="{{ asset('assets/libs/jquery/jquery.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/jquery/jquery.validate.min.js')}}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#registerForm').validate({
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 30,
+                    },
+
+
+                    email: {
+                        required: true,
+                        email: true,
+
+                        remote: {
+                            url: "{{ route('register.checkEmail') }}",
+                            type: "POST",
+                            data: {
+                                email: function () {
+                                    return $('#email').val();
+                                },
+                                _token: "{{ csrf_token() }}"
+                            }
+                        }
+                    },
+
+                    account_username: {
+                        required: true,
+                        minlength: 8
+                    },
+                    password: {
+                        required: true,
+                        minlength: 6
+                    }
+                },
+
+                messages: {
+                    name: {
+                        required: 'Please enter your name',
+                        minlength: 'Name is required to be long up to at least 10 characters'
+                    },
+
+                    account_username: {
+                        required: 'Please enter your username',
+                        minlength: 'Username must be at least 8 characters'
+                    },
+
+                    email: {
+                        required: "Email address is required",
+                        email: "Please enter a valid email",
+                        remote: "Email already exists"
+                    },
+
+
+                    password: {
+                        required: 'Please enter your password',
+                        minlength: 'Password must be at least 6 characters'
+                    }
+                },
+
+                errorElement: 'span',
+
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.mb-3, .mb-2').append(error);
+                },
+
+                highlight: function(element) {
+                    $(element).addClass('is-invalid');
+                },
+
+                unhighlight: function(element) {
+                    $(element).removeClass('is-invalid');
+                },
+
+                submitHandler: function(form) {
+
+                    // disable button
+                    $('#submitButton').prop('disabled', true).text('Creating new account...');
+
+                    form.submit();
+                }
+            });
+        });
+    </script>
 </html>

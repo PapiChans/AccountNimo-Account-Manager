@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/velzon/icons.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/css/velzon/app.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/css/velzon/custom.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/libs/toastr/toastr.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/libs/sweetalert/sweetalert.min.css')}}">
 </head>
 <body>
 
@@ -70,7 +72,7 @@
                                 <span class="d-flex align-items-center">
                                     <img class="rounded-circle header-profile-user" src="{{ asset('assets/images/default_profile.jpg')}}" alt="Header Avatar">
                                     <span class="text-start ms-xl-2">
-                                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Anna Adame</span>
+                                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user()->name }}</span>
                                         <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">User</span>
                                     </span>
                                 </span>
@@ -80,7 +82,11 @@
                                 <h6 class="dropdown-header">Menu</h6>
                                 <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="auth-logout-basic.html"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
+                                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span>
+                                    </a>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -92,7 +98,7 @@
             <!-- LOGO -->
             <div class="navbar-brand-box">
                 <!-- Dark Logo-->
-                <a href="index.html" class="logo logo-dark">
+                <a href="{{ route('vault.index') }}" class="logo logo-dark">
                     <span class="logo-sm">
                         <img src="{{ asset('assets/images/favicon.ico')}}" alt="" height="50">
                     </span>
@@ -101,7 +107,7 @@
                     </span>
                 </a>
                 <!-- Light Logo-->
-                <a href="index.html" class="logo logo-light">
+                <a href="{{ route('vault.index') }}" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="{{ asset('assets/images/favicon.ico')}}" alt="" height="50">
                     </span>
@@ -122,8 +128,8 @@
                         <li class="menu-title"><span data-key="t-menu">Main Menu</span></li>
 
                         <li class="nav-item">
-                            <a class="nav-link menu-link active" href="widgets.html">
-                                <i class="ri-safe-line"></i> <span>Vaults</span>
+                            <a class="nav-link menu-link {{ request()->routeIs('vault.*') ? 'active' : '' }}" href="{{ route('vault.index') }}">
+                                <i class="ri-home-7-line"></i> <span>Dashboard</span>
                             </a>
                         </li>
 
@@ -146,9 +152,12 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="widgets.html">
-                                <i class="ri-logout-box-line"></i> <span>Logout</span>
-                            </a>
+                            <form id="logoutForm2" action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <a class="nav-link menu-link" href="#" onclick="event.preventDefault(); document.getElementById('logoutForm2').submit();">
+                                    <i class="ri-logout-box-line"></i> <span>Logout</span>
+                                </a>
+                            </form>
                         </li>
                     </ul>
                 </div>
@@ -178,7 +187,7 @@
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Main Page</a></li>
-                                        <li class="breadcrumb-item active">Vault</li>
+                                        <li class="breadcrumb-item active">{{ $pageName }}</li>
                                     </ol>
                                 </div>
 
@@ -188,6 +197,7 @@
                     <!-- end page title -->
                     
                     {{-- MAIN CONTENT START --}}
+                    @yield('content')
                     {{-- MAIN CONTENT END --}}
 
                 </div>
@@ -238,4 +248,7 @@
     <script src="{{ asset('assets/js/velzon/feather.min.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/lord-icon-2.1.0.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/app.js')}}"></script>
+    <script src="{{ asset('assets/libs/toastr/toastr.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/sweetalert/sweetalert.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/jquery/jquery.min.js')}}"></script>
 </html>

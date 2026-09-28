@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/velzon/icons.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/css/velzon/app.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/css/velzon/custom.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/libs/toastr/toastr.css')}}">
 </head>
 <body>
     <div class="auth-page-wrapper pt-5">
@@ -52,23 +53,32 @@
                                     <p class="text-muted">Start Managing your Accounts.</p>
                                 </div>
                                 <div class="p-2 mt-4">
-                                    <form action="index.html">
-
+                                    <form id="LoginForm" action="{{ route('login.submit')}}" method="POST">
+                                        @if ($errors->any())
+                                            <div class="d-flex justify-content-center">
+                                                <div class="alert alert-danger py-2 text-center text-danger">
+                                                    @foreach ($errors->all() as $error)
+                                                        <div>{{ $error }}</div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        @endif
+                                        @csrf
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Username</label>
-                                            <input type="text" class="form-control" id="username" placeholder="Enter username">
+                                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" maxlength="20">
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label" for="password-input">Password</label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
-                                                <input type="password" class="form-control pe-5 password-input" placeholder="Enter password" id="password-input">
+                                                <input name="password" type="password" class="form-control pe-5 password-input" placeholder="Enter password" id="password-input" maxlength="20">
                                                 <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon material-shadow-none" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                             </div>
                                         </div>
 
                                         <div class="mt-4">
-                                            <button class="btn btn-primary w-100" type="submit">Log In</button>
+                                            <button class="btn btn-primary w-100" type="submit" id="submitButton">Log In</button>
                                         </div>
                                     </form>
                                 </div>
@@ -115,4 +125,65 @@
     <script src="{{ asset('assets/js/velzon/particles.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/particales.app.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/password-addon.init.js')}}"></script>
+    <script src="{{ asset('assets/libs/jquery/jquery.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/jquery/jquery.validate.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/toastr/toastr.min.js')}}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#LoginForm').validate({
+                rules: {
+                    username: {
+                        required: true,
+                        minlength: 8
+                    },
+                    password: {
+                        required: true,
+                        minlength: 6
+                    }
+                },
+
+                messages: {
+                    username: {
+                        required: 'Please enter your username',
+                        minlength: 'Username must be at least 8 characters'
+                    },
+                    password: {
+                        required: 'Please enter your password',
+                        minlength: 'Password must be at least 6 characters'
+                    }
+                },
+
+                errorElement: 'span',
+
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.mb-3, .mb-2').append(error);
+                },
+
+                highlight: function(element) {
+                    $(element).addClass('is-invalid');
+                },
+
+                unhighlight: function(element) {
+                    $(element).removeClass('is-invalid');
+                },
+
+                submitHandler: function(form) {
+
+                    // disable button
+                    $('#submitButton').prop('disabled', true).text('Logging in...');
+
+                    form.submit();
+                }
+            });
+        });
+    </script>
+    @if (session('notification'))
+    <script>
+        toastr["{{ session('notification')['alert_type'] }}"](
+            "{{ session('notification')['message'] }}",
+            "{{ session('notification')['title'] }}"
+        );
+    </script>
+@endif
 </html>
