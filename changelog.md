@@ -1,5 +1,14 @@
 # Changelogs
 
+**v0.4.0 - September 30, 2026**
+- Add Database Seeder
+- Add Route and Controller
+- Add Logs in Login/Logout
+- Add Completed Logs Page
+- Add DataTable Library
+- Adjust Master Blade
+- Fix: Config from UTC to Asia/Manila
+
 **v0.3.0 - September 28, 2026**
 - Add Jquery, Sweetalert, and Toastr Library
 - Working Login, Register and Logout Function

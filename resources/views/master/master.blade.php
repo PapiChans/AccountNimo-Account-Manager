@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/velzon/custom.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/libs/toastr/toastr.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/libs/sweetalert/sweetalert.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/libs/datatables/dataTables.min.css')}}">
 </head>
 <body>
 
@@ -100,7 +102,7 @@
                 <!-- Dark Logo-->
                 <a href="{{ route('vault.index') }}" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{ asset('assets/images/favicon.ico')}}" alt="" height="50">
+                        <img src="{{ asset('assets/images/favicon.ico')}}" alt="" height="30">
                     </span>
                     <span class="logo-lg">
                         <img src="{{ asset('assets/images/favicon.ico')}}" alt="" height="40">
@@ -109,7 +111,7 @@
                 <!-- Light Logo-->
                 <a href="{{ route('vault.index') }}" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="{{ asset('assets/images/favicon.ico')}}" alt="" height="50">
+                        <img src="{{ asset('assets/images/favicon.ico')}}" alt="" height="30">
                     </span>
                     <span class="logo-lg">
                         <img src="{{ asset('assets/images/favicon.ico')}}" alt="" height="40">
@@ -140,7 +142,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="widgets.html">
+                            <a class="nav-link menu-link {{ request()->routeIs('logs.*') ? 'active' : '' }}" href="{{ route('logs.index') }}">
                                 <i class="ri-file-list-3-line"></i> <span>Logs</span>
                             </a>
                         </li>
@@ -149,15 +151,6 @@
                             <a class="nav-link menu-link" href="widgets.html">
                                 <i class="ri-user-settings-line"></i> <span>Profile</span>
                             </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <form id="logoutForm2" action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <a class="nav-link menu-link" href="#" onclick="event.preventDefault(); document.getElementById('logoutForm2').submit();">
-                                    <i class="ri-logout-box-line"></i> <span>Logout</span>
-                                </a>
-                            </form>
                         </li>
                     </ul>
                 </div>
@@ -241,7 +234,6 @@
             </div>
         </div>
     </div>
-</body>
     <script src="{{ asset('assets/js/velzon/bootstrap.bundle.min.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/simplebar.min.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/waves.min.js')}}"></script>
@@ -251,4 +243,10 @@
     <script src="{{ asset('assets/libs/toastr/toastr.min.js')}}"></script>
     <script src="{{ asset('assets/libs/sweetalert/sweetalert.min.js')}}"></script>
     <script src="{{ asset('assets/libs/jquery/jquery.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/datatables/dataTables.min.js')}}"></script>
+    <script src="{{ asset('assets/libs/datatables/dataTables.responsive.js')}}"></script>
+
+    @stack('scripts')
+</body>
 </html>

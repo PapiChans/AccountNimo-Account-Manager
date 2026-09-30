@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Models\Logs;
 
 class AuthController extends Controller
 {
@@ -28,12 +29,36 @@ class AuthController extends Controller
             'password' => $request->password,
         ];
 
+        $user = User::where('username', $request->username)->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'username' => 'Invalid username or password',
+            ])->onlyInput('username');
+        }
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $user = Auth::user();
 
+            Logs::create([
+                'user_id' => $user->id,
+                'action' => 'Log In Success',
+                'description' => 'Log In Successfully',
+                'ip_address' => request()->ip(),
+                'created_at' => now(),
+            ]);
+
             return redirect('/user/dashboard');
         }
+
+        Logs::create([
+            'user_id' => $user?->id,
+            'action' => 'Log In Failed',
+            'description' => 'Log In Failure',
+            'ip_address' => request()->ip(),
+            'created_at' => now(),
+        ]);
 
         return back()->withErrors([
             'username' => 'Invalid username or password',
@@ -87,12 +112,19 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+
+        $user = Auth::user();
+
+        Logs::create([
+            'user_id' => $user->id,
+            'action' => 'Log Out',
+            'description' => 'Logged Out Successfully',
+            'ip_address' => $request->ip(),
+        ]);
+
         Auth::logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
-
         return redirect('/login');
     }
 }
