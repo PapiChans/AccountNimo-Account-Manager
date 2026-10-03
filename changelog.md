@@ -1,5 +1,14 @@
 # Changelogs
 
+**v0.5.0 - October 3, 2026**
+- Complete Vault Page
+- Add Error catch Blades
+- Add more Routes
+- Add more Controllers
+- Add Assets for functionality
+- Adjust Vaults Table
+- Adjust Master Blade
+
 **v0.4.0 - September 30, 2026**
 - Add Database Seeder
 - Add Route and Controller

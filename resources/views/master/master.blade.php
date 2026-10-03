@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>AccountNimo | Main Page</title>
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
     <script src="{{ asset('assets/js/velzon/layout.js')}}"></script>
@@ -234,19 +235,28 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('assets/libs/jquery/jquery.min.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/bootstrap.bundle.min.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/simplebar.min.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/waves.min.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/feather.min.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/lord-icon-2.1.0.js')}}"></script>
     <script src="{{ asset('assets/js/velzon/app.js')}}"></script>
+    <script src="{{ asset('assets/libs/jquery/jquery.validate.min.js')}}"></script>
     <script src="{{ asset('assets/libs/toastr/toastr.min.js')}}"></script>
     <script src="{{ asset('assets/libs/sweetalert/sweetalert.min.js')}}"></script>
-    <script src="{{ asset('assets/libs/jquery/jquery.min.js')}}"></script>
     <script src="{{ asset('assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{ asset('assets/libs/datatables/dataTables.min.js')}}"></script>
     <script src="{{ asset('assets/libs/datatables/dataTables.responsive.js')}}"></script>
-
     @stack('scripts')
+
+    @if (session('notification'))
+    <script>
+        toastr["{{ session('notification')['alert_type'] }}"](
+            "{{ session('notification')['message'] }}",
+            "{{ session('notification')['title'] }}"
+        );
+    </script>
+    @endif
 </body>
 </html>
