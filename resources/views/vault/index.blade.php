@@ -35,7 +35,9 @@
                     <h6 class="mb-1">{{ $item->name }}</h6>
                     <p class="card-text text-muted">{{ $item->categories->count() }} Categories</p>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-success waves-effect waves-light"><i class="ri-eye-line"></i></button>
+                        <a href="{{ route('categories.index', $item->id)}}" class="btn btn-success waves-effect waves-light">
+                            <i class="ri-eye-line"></i>
+                        </a>
                         <button type="button" onclick="showEditVault({{$item->id}}, `{{$item->name}}`)" class="btn btn-info btn-icon waves-effect waves-light"><i class="ri-pencil-line"></i></button>
                         @if ($item->categories->count() <= 0)  
                             <button type="button" onclick="deleteVault({{ $item->id }})" class="btn btn-danger btn-icon waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>

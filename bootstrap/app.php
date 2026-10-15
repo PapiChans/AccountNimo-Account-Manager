@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckResourceOwnership;
 use App\Http\Middleware\SessionCheck;
 use App\Http\Middleware\GuestCheck;
 use Illuminate\Foundation\Application;
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'sessionCheck' => SessionCheck::class,
             'guestCheck' => GuestCheck::class,
+            'ownerCheck' => CheckResourceOwnership::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

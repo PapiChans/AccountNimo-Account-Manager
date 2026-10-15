@@ -1,5 +1,11 @@
 # Changelogs
 
+**v0.6.0 - October 15, 2026**
+- Complete Category Page
+- Add more Controllers
+- Add more owner's Middleware
+- Add more Routes
+
 **v0.5.0 - October 3, 2026**
 - Complete Vault Page
 - Add Error catch Blades
