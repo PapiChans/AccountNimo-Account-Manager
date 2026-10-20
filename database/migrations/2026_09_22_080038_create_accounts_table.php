@@ -16,9 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('restrict')->onUpdate('cascade');
             $table->string('name');
-            $table->string('username'); 
-            $table->text('password');
-            $table->string('password_mask');
+            $table->string('username')->nullable(); 
+            $table->string('password_mask')->nullable();
             $table->string('password_hash')->nullable(); 
             $table->text('notes')->nullable();
             $table->softDeletes();

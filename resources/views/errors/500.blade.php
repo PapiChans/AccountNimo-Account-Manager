@@ -28,7 +28,7 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <lord-icon class="avatar-xl" src="{{ asset('assets/json/doodle-motif-1140-warning-triangle-hover-pinch.json')}}" trigger="loop" colors="primary:#405189,secondary:#0ab39c"></lord-icon>
-                                    <h1 class="text-primary mb-4">Oops !</h1>
+                                    <h1 class="text-primary mb-4">Oops!</h1>
                                     <h4 class="text-uppercase">Internal Server Error 😭</h4>
                                     <p class="text-muted mb-4">It seems there's a problem in our servers. Please try again!</p>
                                     <a href="{{ route('index') }}" class="btn btn-success"><i class="mdi mdi-home me-1"></i>Back to home</a>

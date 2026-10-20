@@ -28,7 +28,7 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <lord-icon class="avatar-xl" src="{{ asset('assets/json/doodle-motif-1140-warning-triangle-hover-pinch.json')}}" trigger="loop" colors="primary:#405189,secondary:#0ab39c"></lord-icon>
-                                    <h1 class="text-primary mb-4">Oops !</h1>
+                                    <h1 class="text-primary mb-4">Oops!</h1>
                                     <h4 class="text-uppercase">Method Not Allowed 😭</h4>
                                     <p class="text-muted mb-4">Please let us know what you were doing when this error occurred.</p>
                                     <a href="{{ route('index') }}" class="btn btn-success"><i class="mdi mdi-home me-1"></i>Back to home</a>

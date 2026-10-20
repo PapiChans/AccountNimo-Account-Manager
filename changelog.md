@@ -1,5 +1,12 @@
 # Changelogs
 
+**v0.7.0 - October 20, 2026**
+- Added Account Page (But Incomplete)
+- Add Tom Select Library
+- Small Revision: Error Pages
+- Update Models
+- Add more Routes
+
 **v0.6.0 - October 15, 2026**
 - Complete Category Page
 - Add more Controllers
