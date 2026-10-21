@@ -1,5 +1,9 @@
 # Changelogs
 
+**v0.7.1 - October 21, 2026**
+- Add Verify Password Function
+- Minor page corrections
+
 **v0.7.0 - October 20, 2026**
 - Added Account Page (But Incomplete)
 - Add Tom Select Library

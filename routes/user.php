@@ -25,6 +25,7 @@ Route::prefix('/user/category')->middleware('sessionCheck')->controller(AccountC
     Route::post('/account/store', 'store')->middleware('ownerCheck:category,category_id')->name('account.store');
     Route::post('/account/update', 'update')->middleware('ownerCheck:account,edit_id')->name('account.update');
     Route::delete('/account/delete/{account_id}', 'delete')->middleware('ownerCheck:account,account_id')->name('account.delete');
+    Route::post('/account/verify', 'verifyPassword')->middleware('ownerCheck:account,verify_account_id')->name('account.verify.password');
 });
 
 Route::prefix('/user')->middleware('sessionCheck')->controller(LogsController::class)->group( function() {

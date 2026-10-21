@@ -48,11 +48,14 @@
                     <td>
                         <div class="d-flex justify-content-center align-items-center gap-2">
 
-                            <button type="button"
-                                class="btn btn-success btn-icon waves-effect waves-light"
-                                title="Verify">
-                                <i class="ri-check-line"></i>
-                            </button>
+                            @if ($item->password_mask || $item->password_hash)    
+                                <button type="button" onclick="showVerifyAccount({{$item->id}}, `{{$item->name}}`, `{{$item->username}}`)"
+                                    class="btn btn-success btn-icon waves-effect waves-light"
+                                    title="Verify">
+                                    <i class="ri-check-line"></i>
+                                </button>
+                            @endif
+
 
                             <button type="button"
                                 class="btn btn-primary btn-icon waves-effect waves-light"
@@ -188,7 +191,7 @@
 
             Swal.fire({
             title: "Delete Account?",
-            text: "This cannot be undone.",
+            text: "This account are moved to trash.",
             icon: "warning",
             allowOutsideClick: false,
             allowEscapeKey: false,
@@ -373,6 +376,112 @@
                     }
                 });
             }
+        });
+
+        function showVerifyAccount(accountID, name, username) {
+            $('#verifyAccountForm')[0].reset();
+
+            $('#verify_account_id').val(accountID);
+            $('#verifyAccountName').text(name);
+            $('#verifyAccountUsername').text(username);
+            $('#verifyAccountModal').modal('show');
+        }
+
+        $(document).on('click', '#verifyTogglePassword', function () {
+            const passwordInput = $('#verify_password');
+            const passwordIcon = $('#verifyTogglePasswordIcon');
+
+            const isPassword = passwordInput.attr('type') === 'password';
+
+            passwordInput.attr('type', isPassword ? 'text' : 'password');
+
+            passwordIcon
+                .toggleClass('ri-eye-fill', !isPassword)
+                .toggleClass('ri-eye-off-fill', isPassword);
+        });
+
+        $('#verifyAccountForm').validate({
+            rules: {
+                verify_password: {
+                    required: true,
+                },
+            },
+
+            messages: {
+                verify_password: {
+                    required: 'Password is required.',
+                },
+            },
+
+            errorElement: 'div',
+            errorClass: 'invalid-feedback',
+
+            highlight: function (element) {
+                $(element).addClass('is-invalid');
+            },
+
+            unhighlight: function (element) {
+                $(element).removeClass('is-invalid');
+            },
+
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.closest('.auth-pass-inputgroup'));
+            },
+
+            submitHandler: function (form) {
+                const submitButton = $('#verifyAccountSubmit');
+
+                submitButton
+                    .text('Verifying...')
+                    .prop('disabled', true);
+
+                $.ajax({
+                    url: $(form).attr('action'),
+                    type: 'POST',
+                    data: $(form).serialize(),
+                    dataType: 'json',
+
+                    success: function (response) {
+                        Swal.fire({
+                            title: response.verified
+                                ? 'Password Verified!'
+                                : 'Verification Failed',
+
+                            text: response.message,
+
+                            icon: response.verified
+                                ? 'success'
+                                : 'error',
+
+                            confirmButtonText: 'OK',
+                        });
+                    },
+
+                    error: function (xhr) {
+                        let message = 'Something went wrong. Please try again.';
+
+                        if (xhr.status === 422) {
+                            message = xhr.responseJSON?.message
+                                || 'Please check the submitted information.';
+                        } else if (xhr.status === 403) {
+                            message = 'You are not authorized to verify this account.';
+                        }
+
+                        Swal.fire({
+                            title: 'Error',
+                            text: message,
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                        });
+                    },
+
+                    complete: function () {
+                        submitButton.text('Verify').prop('disabled', false);
+                    },
+                });
+
+                return false;
+            },
         });
 
         $(document).ready(function () {

@@ -106,8 +106,8 @@ class AccountController extends Controller
 
             Logs::create([
                 'user_id' => Auth::user()->id,
-                'action' => 'Account Deleted',
-                'description' => 'Deleted Account: '. $delete->name,
+                'action' => 'Account Moved to Trash',
+                'description' => 'Trashed Account: '. $delete->name,
                 'ip_address' => $request->ip(),
             ]);
 
@@ -206,5 +206,40 @@ class AccountController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function verifyPassword(Request $request)
+    {
+        $validated = $request->validate([
+            'verify_account_id' => [
+                'required',
+                'integer',
+                'exists:accounts,id',
+            ],
+            'verify_password' => [
+                'required',
+                'string',
+            ],
+        ]);
+
+        $account = Account::findOrFail($validated['verify_account_id']);
+
+        if (
+            empty($account->password_hash) ||
+            !Hash::check(
+                $validated['verify_password'],
+                $account->password_hash
+            )
+        ) {
+            return response()->json([
+                'verified' => false,
+                'message' => 'The password does not match.',
+            ]);
+        }
+
+        return response()->json([
+            'verified' => true,
+            'message' => 'Password verified successfully!',
+        ]);
     }
 }
