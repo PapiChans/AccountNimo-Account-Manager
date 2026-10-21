@@ -137,7 +137,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="widgets.html">
+                            <a class="nav-link menu-link {{ request()->routeIs('trash.*') ? 'active' : '' }}" href="{{ route('trash.index') }}">
                                 <i class="ri-delete-bin-line"></i> <span>Trash</span>
                             </a>
                         </li>

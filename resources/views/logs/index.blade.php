@@ -38,7 +38,7 @@
 
             </div>
             <div class="table-responsive">
-                <table id="logsTable" class="table table-info table-bordered table-striped align-middle" style="width:100%" >
+                <table id="logsTable" class="table table-bordered table-striped align-middle" style="width:100%" >
                     <thead>
                         <tr>
                             <th>#</th>

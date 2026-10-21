@@ -1,5 +1,8 @@
 # Changelogs
 
+**v0.8.0 - October 21, 2026**
+- Added Trash Page
+
 **v0.7.1 - October 21, 2026**
 - Add Verify Password Function
 - Minor page corrections

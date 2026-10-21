@@ -5,6 +5,7 @@ use App\Http\Controllers\user\VaultController;
 use App\Http\Controllers\user\CategoriesController;
 use App\Http\Controllers\user\LogsController;
 use App\Http\Controllers\user\AccountController;
+use App\Http\Controllers\user\TrashController;
 
 Route::prefix('/user')->middleware('sessionCheck')->controller(VaultController::class)->group( function() {
     Route::get('/dashboard', 'index')->name('vault.index');
@@ -26,6 +27,13 @@ Route::prefix('/user/category')->middleware('sessionCheck')->controller(AccountC
     Route::post('/account/update', 'update')->middleware('ownerCheck:account,edit_id')->name('account.update');
     Route::delete('/account/delete/{account_id}', 'delete')->middleware('ownerCheck:account,account_id')->name('account.delete');
     Route::post('/account/verify', 'verifyPassword')->middleware('ownerCheck:account,verify_account_id')->name('account.verify.password');
+});
+
+Route::prefix('/user/trash')->middleware('sessionCheck')->controller(TrashController::class)->group( function() {
+    Route::get('index', 'index')->name('trash.index');
+    Route::delete('bulkDelete', 'bulkDelete')->name('trash.bulkDelete');
+    Route::get('restore/{account_id}', 'restore')->name('trash.restore');
+    Route::delete('delete/{account_id}', 'delete')->name('trash.delete');
 });
 
 Route::prefix('/user')->middleware('sessionCheck')->controller(LogsController::class)->group( function() {
