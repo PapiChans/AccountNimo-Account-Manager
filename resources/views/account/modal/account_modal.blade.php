@@ -117,11 +117,11 @@
                 <input type="hidden" name="verify_account_id" id="verify_account_id">
                 <div class="modal-body">
                     <div class="col">
-                        <h5 class="card-title" id="verifyAccountName">Helos</h5>
+                        <h5 class="card-title" id="verifyAccountName"></h5>
                         <p class="text-muted">Account Name</p>
                     </div>
                     <div class="col">
-                        <h5 class="card-title" id="verifyAccountUsername">Helos</h5>
+                        <h5 class="card-title" id="verifyAccountUsername"></h5>
                         <p class="text-muted">Username / Email Address</p>
                     </div>
                     <hr>

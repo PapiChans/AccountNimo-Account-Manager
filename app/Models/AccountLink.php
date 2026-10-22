@@ -13,11 +13,11 @@ class AccountLink extends Model
 
     public function account()
     {
-        return $this->belongsTo(Account::class, 'account_id');
+        return $this->belongsTo(Account::class, 'account_id')->withTrashed();
     }
 
     public function linkedAccount()
     {
-        return $this->belongsTo(Account::class, 'linked_account_id');
+        return $this->belongsTo(Account::class, 'linked_account_id')->withTrashed();
     }
 }

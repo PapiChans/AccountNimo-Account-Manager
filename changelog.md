@@ -1,5 +1,11 @@
 # Changelogs
 
+**v0.9.0 - October 22, 2026**
+- Added Account Link Page
+- Added new Controller
+- Add more Routes
+- Grammar FIX
+
 **v0.8.0 - October 21, 2026**
 - Added Trash Page
 

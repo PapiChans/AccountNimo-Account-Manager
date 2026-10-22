@@ -9,7 +9,7 @@
         <div class="col-12 col-md-6 justify-content-end text-end">
             <a href="{{ route('categories.index', $vaultID)}}" class="btn btn-info">Back</a>
             @if (!$accounts->isEmpty()) 
-                <button class="btn btn-primary" onclick="showAddAccount({{$categoryID}})">Create Account</button>
+                <button class="btn btn-primary" onclick="showAddAccount({{$categoryID}})">Add Account</button>
             @endif
         </div>
     </div>
@@ -57,11 +57,13 @@
                             @endif
 
 
-                            <button type="button"
-                                class="btn btn-primary btn-icon waves-effect waves-light"
-                                title="Links">
-                                <i class="ri-link"></i>
-                            </button>
+                            <a href="{{ route('account.link.index', $item->id)}}">
+                                <button type="button"
+                                    class="btn btn-primary btn-icon waves-effect waves-light"
+                                    title="Links">
+                                    <i class="ri-link"></i>
+                                </button>
+                            </a>
 
                             <button type="button" onclick="showEditAccount({{$item->id}}, `{{$item->name}}`, `{{$item->username}}`, `{{$item->password_mask}}`)"
                                 class="btn btn-info btn-icon waves-effect waves-light"

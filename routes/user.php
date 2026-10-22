@@ -6,6 +6,7 @@ use App\Http\Controllers\user\CategoriesController;
 use App\Http\Controllers\user\LogsController;
 use App\Http\Controllers\user\AccountController;
 use App\Http\Controllers\user\TrashController;
+use App\Http\Controllers\user\AccountLinkController;
 
 Route::prefix('/user')->middleware('sessionCheck')->controller(VaultController::class)->group( function() {
     Route::get('/dashboard', 'index')->name('vault.index');
@@ -34,6 +35,12 @@ Route::prefix('/user/trash')->middleware('sessionCheck')->controller(TrashContro
     Route::delete('bulkDelete', 'bulkDelete')->name('trash.bulkDelete');
     Route::get('restore/{account_id}', 'restore')->name('trash.restore');
     Route::delete('delete/{account_id}', 'delete')->name('trash.delete');
+});
+
+Route::prefix('/user/account')->middleware('sessionCheck')->controller(AccountLinkController::class)->group( function() {
+    Route::get('/view/{account_id}', 'index')->middleware('ownerCheck:account,account_id')->name('account.link.index');
+    Route::post('/store', 'store')->middleware('ownerCheck:account,account_id')->name('account.link.store');
+    Route::delete('/delete/{account_id}/{link_id}', 'delete')->middleware('ownerCheck:account,account_id')->name('account.link.delete');
 });
 
 Route::prefix('/user')->middleware('sessionCheck')->controller(LogsController::class)->group( function() {
