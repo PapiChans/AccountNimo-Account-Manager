@@ -1,5 +1,14 @@
 # Changelogs
 
+**v1.0.0 - October 23, 2026**
+- Added Profile Page
+- Enhance Login Security
+- Enhance Register Validation
+- Removed Pincode Column
+- Add and Enhance some Routes
+- Update for PHP for more Security
+- **THIS PROJECT IS OFFICIALLY COMPLETE**
+
 **v0.9.0 - October 22, 2026**
 - Added Account Link Page
 - Added new Controller

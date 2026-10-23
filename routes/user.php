@@ -7,6 +7,7 @@ use App\Http\Controllers\user\LogsController;
 use App\Http\Controllers\user\AccountController;
 use App\Http\Controllers\user\TrashController;
 use App\Http\Controllers\user\AccountLinkController;
+use App\Http\Controllers\user\ProfileController;
 
 Route::prefix('/user')->middleware('sessionCheck')->controller(VaultController::class)->group( function() {
     Route::get('/dashboard', 'index')->name('vault.index');
@@ -45,4 +46,11 @@ Route::prefix('/user/account')->middleware('sessionCheck')->controller(AccountLi
 
 Route::prefix('/user')->middleware('sessionCheck')->controller(LogsController::class)->group( function() {
     Route::get('/logs', 'index')->name('logs.index');
+});
+
+Route::prefix('/user')->middleware('sessionCheck')->controller(ProfileController::class)->group( function() {
+    Route::get('/profile', 'index')->name('profile.index');
+    Route::post('/profile/updateName', 'updateName')->name('profile.updateName');
+    Route::post('/profile/checkOldPassword', 'checkOldPassword')->name('profile.checkOldPassword');
+    Route::post('/profile/changePassword', 'changePassword')->name('profile.changePassword');
 });

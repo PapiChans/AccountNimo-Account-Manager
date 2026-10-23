@@ -156,7 +156,18 @@
 
                     account_username: {
                         required: true,
-                        minlength: 8
+                        minlength: 8,
+
+                        remote: {
+                            url: "{{ route('register.checkUsername') }}",
+                            type: "POST",
+                            data: {
+                                account_username: function () {
+                                    return $('#account_username').val();
+                                },
+                                _token: "{{ csrf_token() }}"
+                            }
+                        }
                     },
                     password: {
                         required: true,
@@ -172,7 +183,8 @@
 
                     account_username: {
                         required: 'Please enter your username',
-                        minlength: 'Username must be at least 8 characters'
+                        minlength: 'Username must be at least 8 characters',
+                        remote: "Username already exists",
                     },
 
                     email: {

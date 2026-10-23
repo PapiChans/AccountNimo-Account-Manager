@@ -8,6 +8,7 @@ Route::prefix('/')->middleware('guestCheck')->controller(AuthController::class)-
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login/submit', [AuthController::class, 'loginSubmit'])->name('login.submit');
     Route::get('/register', [AuthController::class, 'register'])->name('register');
+    Route::post('/register/checkUsername', [AuthController::class, 'registerCheckUsername'])->name('register.checkUsername');
     Route::post('/register/checkEmail', [AuthController::class, 'registerCheckEmail'])->name('register.checkEmail');
     Route::post('/register/store', [AuthController::class, 'registerStore'])->name('register.store');
 });

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\Logs;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AuthController extends Controller
 {
@@ -18,26 +19,47 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function loginSubmit(Request $request) {
+    
+    public function loginSubmit(Request $request)
+    {
         $request->validate([
             'username' => 'required',
             'password' => 'required',
         ]);
+
+        $username = strtolower(trim($request->username));
+        $ip = $request->ip();
+
+        $key = 'login:' . $username . '|' . $ip;
+        $ipKey = 'login-ip:' . $ip;
+
+        $maxAttempts = 5;
+        $decaySeconds = 60;
+
+        if (RateLimiter::tooManyAttempts($ipKey, $maxAttempts)) {
+            $seconds = RateLimiter::availableIn($ipKey);
+
+            return back()->withErrors([
+                'username' => "Too many failed login attempts. Please try again in {$seconds} seconds.",
+            ])->onlyInput('username');
+        }
+
+        if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
+            $seconds = RateLimiter::availableIn($key);
+
+            return back()->withErrors([
+                'username' => "Too many failed login attempts. Please try again in {$seconds} seconds.",
+            ])->onlyInput('username');
+        }
 
         $credentials = [
             'username' => $request->username,
             'password' => $request->password,
         ];
 
-        $user = User::where('username', $request->username)->first();
-
-        if (!$user) {
-            return back()->withErrors([
-                'username' => 'Invalid username or password',
-            ])->onlyInput('username');
-        }
-
         if (Auth::attempt($credentials)) {
+            RateLimiter::clear($key);
+
             $request->session()->regenerate();
             $user = Auth::user();
 
@@ -45,23 +67,42 @@ class AuthController extends Controller
                 'user_id' => $user->id,
                 'action' => 'Log In Success',
                 'description' => 'Log In Successfully',
-                'ip_address' => request()->ip(),
+                'ip_address' => $ip,
                 'created_at' => now(),
             ]);
 
             return redirect('/user/dashboard');
         }
 
+        RateLimiter::hit($key, $decaySeconds);
+        RateLimiter::hit($ipKey, $decaySeconds);
+
+        $user = User::where('username', $request->username)->first();
+
         Logs::create([
             'user_id' => $user?->id,
             'action' => 'Log In Failed',
             'description' => 'Log In Failure',
-            'ip_address' => request()->ip(),
+            'ip_address' => $ip,
             'created_at' => now(),
         ]);
 
+        if (
+            RateLimiter::tooManyAttempts($ipKey, $maxAttempts) ||
+            RateLimiter::tooManyAttempts($key, $maxAttempts)
+        ) {
+            $seconds = max(
+                RateLimiter::availableIn($ipKey),
+                RateLimiter::availableIn($key)
+            );
+
+            return back()->withErrors([
+                'username' => "Too many failed login attempts. Please try again in {$seconds} seconds.",
+            ])->onlyInput('username');
+        }
+
         return back()->withErrors([
-            'username' => 'Invalid username or password',
+            'username' => 'Invalid username or password.',
         ])->onlyInput('username');
     }
 
@@ -71,6 +112,14 @@ class AuthController extends Controller
 
     public function registerCheckEmail(Request $request) {
         $query = User::where('email', $request->email);
+        // Checking
+        $exists = $query->exists();
+
+        return response()->json(!$exists);
+    }
+
+    public function registerCheckUsername(Request $request) {
+        $query = User::where('username', $request->account_username);
         // Checking
         $exists = $query->exists();
 
